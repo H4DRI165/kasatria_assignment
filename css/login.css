@@ -51,30 +51,10 @@
 
 .google-sign-in {
   width: 100%;
-  min-height: 44px;
-
   display: flex;
-  flex-direction: row;
   justify-content: center;
   align-items: center;
-  gap: 10px;
-
-  padding: 10px 16px;
-
-  background-color: #ffffff;
-  border: 1px solid #dadce0;
-  border-radius: 6px;
-
-  color: #3c4043;
-  font-family: Arial, sans-serif;
-  font-size: 14px;
-  font-weight: 500;
-
-  cursor: pointer;
-
-  transition:
-    background-color 0.2s ease,
-    box-shadow 0.2s ease;
+  margin-top: 20px;
 }
 
 .google-sign-in:hover {
