@@ -1,5 +1,38 @@
 {
+  "name": "kasatria_assignment",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/H4DRI165/kasatria_assignment.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/H4DRI165/kasatria_assignment/issues"
+  },
+  "homepage": "https://github.com/H4DRI165/kasatria_assignment#readme",
   "dependencies": {
-    "eslint": "^10.14.0"
+    "three": "^0.187.0"
+  },
+  "devDependencies": {
+    "eslint": "^10.14.0",
+    "prettier": "^3.10.0",
+    "vite": "^8.3.8"
   }
 }
