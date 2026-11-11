@@ -64,6 +64,7 @@ export function initializeVisualization(container, records) {
     previousPointerY = event.clientY;
 
     event.preventDefault();
+    renderer.domElement.setPointerCapture(event.pointerId);
   }
 
   function handlePointerMove(event) {
@@ -90,7 +91,8 @@ export function initializeVisualization(container, records) {
     );
 
     right.multiplyScalar(
-      (-2 * deltaX * targetDistance) / renderer.domElement.clientHeight,
+      (-2 * deltaX * targetDistance * controls.panSpeed) /
+        renderer.domElement.clientHeight,
     );
 
     panOffset.add(right);
@@ -99,7 +101,8 @@ export function initializeVisualization(container, records) {
     const up = new THREE.Vector3().setFromMatrixColumn(camera.matrixWorld, 1);
 
     up.multiplyScalar(
-      (2 * deltaY * targetDistance) / renderer.domElement.clientHeight,
+      (2 * deltaY * targetDistance * controls.panSpeed) /
+        renderer.domElement.clientHeight,
     );
 
     panOffset.add(up);
@@ -115,6 +118,18 @@ export function initializeVisualization(container, records) {
     if (event.button === 2) {
       isRightDragging = false;
     }
+
+    if (renderer.domElement.hasPointerCapture(event.pointerId)) {
+      renderer.domElement.releasePointerCapture(event.pointerId);
+    }
+  }
+
+  function handlePointerCancel(event) {
+    isRightDragging = false;
+
+    if (renderer.domElement.hasPointerCapture(event.pointerId)) {
+      renderer.domElement.releasePointerCapture(event.pointerId);
+    }
   }
 
   function handleContextMenu(event) {
@@ -127,7 +142,7 @@ export function initializeVisualization(container, records) {
 
   renderer.domElement.addEventListener("pointerup", handlePointerUp);
 
-  renderer.domElement.addEventListener("pointercancel", handlePointerUp);
+  renderer.domElement.addEventListener("pointercancel", handlePointerCancel);
 
   renderer.domElement.addEventListener("contextmenu", handleContextMenu);
 
@@ -233,7 +248,10 @@ export function initializeVisualization(container, records) {
 
       renderer.domElement.removeEventListener("pointerup", handlePointerUp);
 
-      renderer.domElement.removeEventListener("pointercancel", handlePointerUp);
+      renderer.domElement.removeEventListener(
+        "pointercancel",
+        handlePointerCancel,
+      );
 
       renderer.domElement.removeEventListener("contextmenu", handleContextMenu);
 
