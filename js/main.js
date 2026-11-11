@@ -9,6 +9,8 @@ import "../css/visualization.css";
 const loginScreen = document.querySelector("#login-screen");
 const visualizationScreen = document.querySelector("#visualization-screen");
 const visualizationContainer = document.querySelector("#visualization");
+const connectSheetsButton = document.querySelector("#connect-sheets-button");
+const sheetsStatus = document.querySelector("#sheets-status");
 
 let visualizationInstance = null;
 
@@ -40,9 +42,15 @@ initializeAuth({
         records,
       );
 
+      connectSheetsButton.hidden = true;
+      sheetsStatus.classList.remove("hidden");
+
       console.log("Periodic Table visualization initialized.");
     } catch (error) {
       console.error("Failed to load visualization data:", error);
+
+      connectSheetsButton.hidden = false;
+      sheetsStatus.classList.add("hidden");
 
       alert(`Unable to load Google Sheets data: ${error.message}`);
     }
@@ -58,6 +66,8 @@ initializeAuth({
     }
 
     visualizationScreen.classList.add("hidden");
+    connectSheetsButton.hidden = false;
+    sheetsStatus.classList.add("hidden");
     loginScreen.classList.remove("hidden");
   },
 
