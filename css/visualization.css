@@ -33,29 +33,110 @@
   background: #374151;
 }
 
-.demo-tile {
-  width: 150px;
-  height: 180px;
-
-  padding: 15px;
-
+.periodic-tile {
+  width: 110px;
+  height: 150px;
+  box-sizing: border-box;
+  padding: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: #f9fafb;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-
-  color: #111827;
-  background: #269b68;
-  border: 2px solid rgba(255, 255, 255, 0.6);
-  border-radius: 8px;
-
+  justify-content: flex-start;
   text-align: center;
+  overflow: hidden;
+  backface-visibility: visible;
+  font-family: Arial, sans-serif;
 }
 
-.demo-tile h3 {
-  margin: 8px 0;
+.net-worth-red {
+  background: #dc4c4c;
 }
 
-.demo-tile p {
-  margin: 4px;
+.net-worth-orange {
+  background: #e69a32;
+}
+
+.net-worth-green {
+  background: #269b68;
+}
+
+.tile-number {
+  align-self: flex-start;
+  font-size: 10px;
+  opacity: 0.8;
+}
+
+.tile-photo {
+  width: 42px;
+  height: 42px;
+  margin: 4px 0;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #273449;
+}
+
+.tile-name {
+  width: 100%;
+  margin: 4px 0;
+  font-size: 12px;
+  font-weight: bold;
+  overflow-wrap: anywhere;
+}
+
+.tile-detail {
+  margin: 2px 0;
+  font-size: 9px;
+}
+
+.tile-interest {
+  margin: 3px 0;
+  font-size: 9px;
+  overflow-wrap: anywhere;
+}
+
+.tile-net-worth {
+  margin: auto 0 2px;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.layout-controls button {
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.layout-controls button.active {
+  background: #269b68;
+  border-color: #269b68;
+}
+
+.layout-controls button:focus-visible {
+  outline: 2px solid #f9fafb;
+  outline-offset: 3px;
+}
+
+.sheets-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border: 1px solid #269b68;
+  border-radius: 6px;
+  background-color: rgba(38, 155, 104, 0.12);
+  color: #6ee7a8;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.status-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #269b68;
+  flex-shrink: 0;
 }
