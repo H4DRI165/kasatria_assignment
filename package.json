@@ -31,7 +31,9 @@
     "three": "^0.187.0"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "eslint": "^10.14.0",
+    "globals": "^17.14.0",
     "prettier": "^3.10.0",
     "vite": "^8.3.8"
   }
