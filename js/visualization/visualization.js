@@ -192,10 +192,8 @@ export function initializeVisualization(container, records) {
 
       const rotation = position.rotation ?? { x: 0, y: 0, z: 0 };
 
-      tile.userData.targetRotation = new THREE.Euler(
-        rotation.x,
-        rotation.y,
-        rotation.z,
+      tile.userData.targetQuaternion = new THREE.Quaternion().setFromEuler(
+        new THREE.Euler(rotation.x, rotation.y, rotation.z),
       );
     });
   }
@@ -223,19 +221,14 @@ export function initializeVisualization(container, records) {
     animationFrameId = requestAnimationFrame(animate);
 
     tiles.forEach((tile) => {
-      const targetPosition = tile.userData.targetPosition;
-      const targetRotation = tile.userData.targetRotation;
+      const { targetPosition, targetQuaternion } = tile.userData;
 
       if (targetPosition) {
         tile.position.lerp(targetPosition, 0.08);
       }
 
-      if (targetRotation) {
-        tile.rotation.x += (targetRotation.x - tile.rotation.x) * 0.08;
-
-        tile.rotation.y += (targetRotation.y - tile.rotation.y) * 0.08;
-
-        tile.rotation.z += (targetRotation.z - tile.rotation.z) * 0.08;
+      if (targetQuaternion) {
+        tile.quaternion.slerp(targetQuaternion, 0.08);
       }
     });
 
