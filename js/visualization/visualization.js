@@ -4,6 +4,7 @@ import { TrackballControls } from "three/addons/controls/TrackballControls.js";
 import { createTile } from "./tile.js";
 import { getTablePositions } from "./layouts/table.js";
 import { getSpherePositions } from "./layouts/sphere.js";
+import { getGridPositions } from "./layouts/grid.js";
 
 export function initializeVisualization(container, records) {
   if (!container) {
@@ -164,6 +165,10 @@ export function initializeVisualization(container, records) {
 
       case "sphere":
         positions = getSpherePositions(tiles.length);
+        break;
+
+      case "grid":
+        positions = getGridPositions(tiles.length);
         break;
 
       default:

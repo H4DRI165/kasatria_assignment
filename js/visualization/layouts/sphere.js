@@ -1,4 +1,3 @@
-
 import * as THREE from "three";
 
 const DEFAULT_RADIUS = 1000;
