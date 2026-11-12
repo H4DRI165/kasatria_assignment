@@ -11,8 +11,26 @@ const visualizationScreen = document.querySelector("#visualization-screen");
 const visualizationContainer = document.querySelector("#visualization");
 const connectSheetsButton = document.querySelector("#connect-sheets-button");
 const sheetsStatus = document.querySelector("#sheets-status");
+const layoutButtons = document.querySelectorAll(".layout-button");
 
 let visualizationInstance = null;
+
+layoutButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    if (!visualizationInstance) return;
+
+    const layoutName = button.dataset.layout;
+
+    visualizationInstance.setLayout(layoutName);
+
+    // Update active button
+    layoutButtons.forEach((item) => {
+      item.classList.remove("active");
+    });
+
+    button.classList.add("active");
+  });
+});
 
 initializeAuth({
   onSignIn: (user) => {
