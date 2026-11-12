@@ -2,6 +2,7 @@ import { GOOGLE_CONFIG } from "../config.js";
 
 let tokenClient = null;
 let accessToken = null;
+let signedInEmail = null;
 
 function loadGoogleIdentityServices() {
   if (window.google?.accounts) {
@@ -86,6 +87,9 @@ export async function initializeAuth({
     },
 
     error_callback: (error) => {
+
+      if (error.type === "popup_closed") return;
+
       onError?.(
         new Error(error.message || "Google Sheets authorization failed."),
       );
@@ -99,6 +103,8 @@ export async function initializeAuth({
     callback: (response) => {
       try {
         const user = decodeIdToken(response.credential);
+
+        signedInEmail = user.email;
 
         onSignIn?.({
           id: user.sub,
@@ -124,12 +130,19 @@ export async function initializeAuth({
   });
 
   // Request Sheets access only after a direct user click.
+  // The hint asks Google to use the same account the user signed in with.
   connectSheetsButton.addEventListener("click", () => {
-    tokenClient.requestAccessToken();
+    tokenClient.requestAccessToken({ hint: signedInEmail ?? undefined });
   });
 
   signOutButton.addEventListener("click", () => {
+    // Invalidate the token on Google's side so it cannot be reused.
+    if (accessToken) {
+      window.google.accounts.oauth2.revoke(accessToken);
+    }
+
     accessToken = null;
+    signedInEmail = null;
 
     window.google.accounts.id.disableAutoSelect();
 

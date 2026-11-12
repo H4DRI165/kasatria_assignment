@@ -46,17 +46,9 @@
             GitHub Repository
           </a>
 
-          <button
-            id="connect-sheets-button"
-            class="connect-sheets-button"
-            type="button"
-          >
-            Connect Google Sheet
-          </button>
-
-          <div id="sheets-status" class="sheets-status hidden">
+          <div id="sheets-status" class="sheets-status">
             <span class="status-indicator"></span>
-            <span>Google Sheets Connected</span>
+            <span id="sheets-status-text">Google Sheets not connected</span>
           </div>
 
           <button id="sign-out-button" type="button">Sign Out</button>
@@ -65,18 +57,34 @@
 
       <!-- Main Visualization -->
       <main class="main-content">
-        <div id="visualization" class="visualization-container"></div>
+        <div class="visualization-stage">
+          <div id="visualization" class="visualization-container"></div>
 
-        <!-- Layout Controls -->
-        <div class="layout-controls">
+          <!-- Shown until Google Sheets data is loaded -->
+          <div id="empty-state" class="empty-state" role="status">
+            <h3>Connect your Google Sheet to get started</h3>
+            <p>
+              Your data is loaded from Google Sheets. Connect it to see the 3D
+              Periodic Table and switch between Table, Sphere, Helix and Grid
+              layouts.
+            </p>
+            <button
+              id="connect-sheets-button"
+              class="empty-state-button"
+              type="button"
+            >
+              Connect Google Sheet
+            </button>
+          </div>
+        </div>
+
+        <!-- Layout Controls (hidden until data is loaded) -->
+        <div id="layout-controls" class="layout-controls hidden">
           <button class="layout-button active" data-layout="table">
             Table
           </button>
-
           <button class="layout-button" data-layout="sphere">Sphere</button>
-
           <button class="layout-button" data-layout="helix">Helix</button>
-
           <button class="layout-button" data-layout="grid">Grid</button>
         </div>
       </main>

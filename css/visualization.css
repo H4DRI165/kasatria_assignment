@@ -1,19 +1,67 @@
-.visualization-container {
-  width: 100%;
-  min-height: calc(100vh - 64px);
+.main-content {
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  height: calc(100vh - 64px);
+}
+
+.visualization-stage {
+  position: relative;
+  flex: 1;
+  min-height: 0;
 }
 
 #visualization {
-  position: relative;
-  flex: 1;
-  min-height: 650px;
+  position: absolute;
+  inset: 0;
   overflow: hidden;
 }
 
+.empty-state {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 24px;
+  text-align: center;
+}
+
+.empty-state h3 {
+  margin: 0;
+  font-size: 20px;
+  color: var(--text-primary);
+}
+
+.empty-state p {
+  margin: 0;
+  max-width: 420px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.empty-state-button {
+  margin-top: 12px;
+  padding: 10px 24px;
+  color: var(--text-primary);
+  background: #269b68;
+  border: 1px solid #269b68;
+  border-radius: 6px;
+}
+
+.empty-state-button:hover {
+  background: #1f8458;
+}
+
+.empty-state-button:focus-visible {
+  outline: 2px solid #f9fafb;
+  outline-offset: 3px;
+}
+
 .layout-controls {
+  flex-shrink: 0;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
@@ -27,19 +75,34 @@
   background: #273449;
   border: 1px solid #374151;
   border-radius: 6px;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .layout-controls button:hover {
   background: #374151;
 }
 
+.layout-controls button.active {
+  background: #269b68;
+  border-color: #269b68;
+}
+
+.layout-controls button:focus-visible {
+  outline: 2px solid #f9fafb;
+  outline-offset: 3px;
+}
+
+/* Tiles are styled at 2x size; tile.js scales them down by 0.5 for sharper zoom. */
 .periodic-tile {
-  width: 110px;
-  height: 150px;
+  width: 220px;
+  height: 300px;
   box-sizing: border-box;
-  padding: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 8px;
+  padding: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
   color: #f9fafb;
   display: flex;
   flex-direction: column;
@@ -65,14 +128,14 @@
 
 .tile-number {
   align-self: flex-start;
-  font-size: 10px;
+  font-size: 20px;
   opacity: 0.8;
 }
 
 .tile-photo {
-  width: 42px;
-  height: 42px;
-  margin: 4px 0;
+  width: 84px;
+  height: 84px;
+  margin: 8px 0;
   border-radius: 50%;
   object-fit: cover;
   background: #273449;
@@ -80,44 +143,27 @@
 
 .tile-name {
   width: 100%;
-  margin: 4px 0;
-  font-size: 12px;
+  margin: 8px 0;
+  font-size: 24px;
   font-weight: bold;
   overflow-wrap: anywhere;
 }
 
 .tile-detail {
-  margin: 2px 0;
-  font-size: 9px;
+  margin: 4px 0;
+  font-size: 18px;
 }
 
 .tile-interest {
-  margin: 3px 0;
-  font-size: 9px;
+  margin: 6px 0;
+  font-size: 18px;
   overflow-wrap: anywhere;
 }
 
 .tile-net-worth {
-  margin: auto 0 2px;
-  font-size: 11px;
+  margin: auto 0 4px;
+  font-size: 22px;
   font-weight: bold;
-}
-
-.layout-controls button {
-  cursor: pointer;
-  transition:
-    background-color 0.2s ease,
-    border-color 0.2s ease;
-}
-
-.layout-controls button.active {
-  background: #269b68;
-  border-color: #269b68;
-}
-
-.layout-controls button:focus-visible {
-  outline: 2px solid #f9fafb;
-  outline-offset: 3px;
 }
 
 .sheets-status {
@@ -125,10 +171,9 @@
   align-items: center;
   gap: 8px;
   padding: 8px 12px;
-  border: 1px solid #269b68;
+  border: 1px solid var(--border);
   border-radius: 6px;
-  background-color: rgba(38, 155, 104, 0.12);
-  color: #6ee7a8;
+  color: var(--text-secondary);
   font-size: 13px;
   font-weight: 500;
 }
@@ -137,6 +182,16 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background-color: #269b68;
+  background-color: var(--text-secondary);
   flex-shrink: 0;
+}
+
+.sheets-status.connected {
+  border-color: #269b68;
+  background-color: rgba(38, 155, 104, 0.12);
+  color: #6ee7a8;
+}
+
+.sheets-status.connected .status-indicator {
+  background-color: #269b68;
 }
