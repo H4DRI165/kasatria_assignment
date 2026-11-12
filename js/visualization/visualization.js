@@ -1,11 +1,11 @@
 import * as THREE from "three";
-
 import { CSS3DRenderer } from "three/addons/renderers/CSS3DRenderer.js";
-
 import { TrackballControls } from "three/addons/controls/TrackballControls.js";
-
 import { createTile } from "./tile.js";
 import { getTablePositions } from "./layouts/table.js";
+import { getSpherePositions } from "./layouts/sphere.js";
+import { getGridPositions } from "./layouts/grid.js";
+import { getHelixPositions } from "./layouts/helix.js";
 
 export function initializeVisualization(container, records) {
   if (!container) {
@@ -164,6 +164,18 @@ export function initializeVisualization(container, records) {
         positions = getTablePositions(tiles.length);
         break;
 
+      case "sphere":
+        positions = getSpherePositions(tiles.length);
+        break;
+
+      case "grid":
+        positions = getGridPositions(tiles.length);
+        break;
+
+      case "helix":
+        positions = getHelixPositions(tiles.length);
+        break;
+
       default:
         console.warn(`Unknown layout: ${layoutName}`);
         return;
@@ -178,7 +190,11 @@ export function initializeVisualization(container, records) {
         position.z,
       );
 
-      tile.userData.targetRotation = new THREE.Euler(0, 0, 0);
+      const rotation = position.rotation ?? { x: 0, y: 0, z: 0 };
+
+      tile.userData.targetQuaternion = new THREE.Quaternion().setFromEuler(
+        new THREE.Euler(rotation.x, rotation.y, rotation.z),
+      );
     });
   }
 
@@ -205,19 +221,14 @@ export function initializeVisualization(container, records) {
     animationFrameId = requestAnimationFrame(animate);
 
     tiles.forEach((tile) => {
-      const targetPosition = tile.userData.targetPosition;
-      const targetRotation = tile.userData.targetRotation;
+      const { targetPosition, targetQuaternion } = tile.userData;
 
       if (targetPosition) {
         tile.position.lerp(targetPosition, 0.08);
       }
 
-      if (targetRotation) {
-        tile.rotation.x += (targetRotation.x - tile.rotation.x) * 0.08;
-
-        tile.rotation.y += (targetRotation.y - tile.rotation.y) * 0.08;
-
-        tile.rotation.z += (targetRotation.z - tile.rotation.z) * 0.08;
+      if (targetQuaternion) {
+        tile.quaternion.slerp(targetQuaternion, 0.08);
       }
     });
 

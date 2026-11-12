@@ -54,20 +54,23 @@
   display: flex;
   justify-content: center;
   align-items: center;
+
+  background: transparent;
+  border: none;
+  outline: none;
+  box-shadow: none;
 }
 
-.google-sign-in:hover {
-  background-color: #f8faff;
-  box-shadow: 0 1px 3px rgba(60, 64, 67, 0.2);
-}
-
+.google-sign-in:hover,
 .google-sign-in:active {
-  background-color: #f1f3f4;
+  background: transparent;
+  border: none;
+  outline: none;
+  box-shadow: none;
 }
 
 .google-sign-in:focus-visible {
-  outline: 2px solid #4285f4;
-  outline-offset: 2px;
+  outline: none;
 }
 
 .google-icon {

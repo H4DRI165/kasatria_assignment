@@ -9,10 +9,51 @@ import "../css/visualization.css";
 const loginScreen = document.querySelector("#login-screen");
 const visualizationScreen = document.querySelector("#visualization-screen");
 const visualizationContainer = document.querySelector("#visualization");
-const connectSheetsButton = document.querySelector("#connect-sheets-button");
 const sheetsStatus = document.querySelector("#sheets-status");
+const sheetsStatusText = document.querySelector("#sheets-status-text");
+const layoutButtons = document.querySelectorAll(".layout-button");
+const emptyState = document.querySelector("#empty-state");
+const layoutControls = document.querySelector("#layout-controls");
+const signOutButton = document.querySelector("#sign-out-button");
+const signOutDialog = document.querySelector("#sign-out-dialog");
 
 let visualizationInstance = null;
+
+function setActiveLayoutButton(layoutName) {
+  layoutButtons.forEach((button) => {
+    button.classList.toggle("active", button.dataset.layout === layoutName);
+  });
+}
+
+// Show layout controls only when data is loaded; otherwise show the empty state.
+function setVisualizationReady(isReady) {
+  emptyState.classList.toggle("hidden", isReady);
+  layoutControls.classList.toggle("hidden", !isReady);
+
+  sheetsStatus.classList.toggle("connected", isReady);
+  sheetsStatusText.textContent = isReady
+    ? "Google Sheets connected"
+    : "Google Sheets not connected";
+
+  if (isReady) {
+    setActiveLayoutButton("table");
+  }
+}
+
+layoutButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    if (!visualizationInstance) return;
+
+    const layoutName = button.dataset.layout;
+
+    visualizationInstance.setLayout(layoutName);
+    setActiveLayoutButton(layoutName);
+  });
+});
+
+signOutButton.addEventListener("click", () => {
+  signOutDialog.showModal();
+});
 
 initializeAuth({
   onSignIn: (user) => {
@@ -42,15 +83,13 @@ initializeAuth({
         records,
       );
 
-      connectSheetsButton.hidden = true;
-      sheetsStatus.classList.remove("hidden");
+      setVisualizationReady(true);
 
       console.log("Periodic Table visualization initialized.");
     } catch (error) {
       console.error("Failed to load visualization data:", error);
 
-      connectSheetsButton.hidden = false;
-      sheetsStatus.classList.add("hidden");
+      setVisualizationReady(false);
 
       alert(`Unable to load Google Sheets data: ${error.message}`);
     }
@@ -65,9 +104,8 @@ initializeAuth({
       visualizationInstance = null;
     }
 
+    setVisualizationReady(false);
     visualizationScreen.classList.add("hidden");
-    connectSheetsButton.hidden = false;
-    sheetsStatus.classList.add("hidden");
     loginScreen.classList.remove("hidden");
   },
 
