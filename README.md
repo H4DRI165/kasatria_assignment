@@ -4,7 +4,6 @@ Interactive 3D Periodic Table built with Three.js. People data is loaded from
 Google Sheets after the user signs in with Google.
 
 **Live demo:** https://kasatria-assignment-steel.vercel.app
-**Repository:** https://github.com/H4DRI165/kasatria_assignment
 
 ## Features
 
