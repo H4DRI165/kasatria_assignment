@@ -195,3 +195,62 @@
 .sheets-status.connected .status-indicator {
   background-color: #269b68;
 }
+
+.confirm-dialog {
+  width: min(400px, calc(100vw - 32px));
+  padding: 24px;
+  color: var(--text-primary);
+  background: var(--navbar);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.confirm-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.confirm-dialog h3 {
+  margin: 0 0 8px;
+  font-size: 18px;
+}
+
+.confirm-dialog p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.confirm-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.dialog-button {
+  padding: 8px 16px;
+  color: var(--text-primary);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.dialog-button:hover {
+  background: var(--border);
+}
+
+.dialog-button:focus-visible {
+  outline: 2px solid #f9fafb;
+  outline-offset: 3px;
+}
+
+.dialog-button-danger {
+  background: #dc4c4c;
+  border-color: #dc4c4c;
+}
+
+.dialog-button-danger:hover {
+  background: #c43f3f;
+}

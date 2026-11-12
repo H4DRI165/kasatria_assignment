@@ -90,6 +90,24 @@
       </main>
     </section>
 
+    <dialog id="sign-out-dialog" class="confirm-dialog">
+      <form method="dialog">
+        <h3>Sign out?</h3>
+        <p>You will need to sign in and connect Google Sheets again.</p>
+
+        <div class="confirm-dialog-actions">
+          <button class="dialog-button" value="cancel" autofocus>Cancel</button>
+          <button
+            id="confirm-sign-out-button"
+            class="dialog-button dialog-button-danger"
+            value="confirm"
+          >
+            Sign out
+          </button>
+        </div>
+      </form>
+    </dialog>
+
     <script type="module" src="/js/main.js"></script>
   </body>
 </html>

@@ -14,6 +14,8 @@ const sheetsStatusText = document.querySelector("#sheets-status-text");
 const layoutButtons = document.querySelectorAll(".layout-button");
 const emptyState = document.querySelector("#empty-state");
 const layoutControls = document.querySelector("#layout-controls");
+const signOutButton = document.querySelector("#sign-out-button");
+const signOutDialog = document.querySelector("#sign-out-dialog");
 
 let visualizationInstance = null;
 
@@ -47,6 +49,10 @@ layoutButtons.forEach((button) => {
     visualizationInstance.setLayout(layoutName);
     setActiveLayoutButton(layoutName);
   });
+});
+
+signOutButton.addEventListener("click", () => {
+  signOutDialog.showModal();
 });
 
 initializeAuth({
