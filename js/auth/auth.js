@@ -54,7 +54,7 @@ export async function initializeAuth({
 }) {
   const signInButton = document.querySelector("#google-sign-in");
   const connectSheetsButton = document.querySelector("#connect-sheets-button");
-  const signOutButton = document.querySelector("#sign-out-button");
+  const signOutButton = document.querySelector("#confirm-sign-out-button");
 
   if (!signInButton || !connectSheetsButton || !signOutButton) {
     throw new Error("Required authentication elements were not found.");
@@ -87,7 +87,6 @@ export async function initializeAuth({
     },
 
     error_callback: (error) => {
-
       if (error.type === "popup_closed") return;
 
       onError?.(
