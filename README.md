@@ -14,6 +14,7 @@ Google Sheets after the user signs in with Google.
 - Four layouts: Table (20 × 10), Sphere, Double Helix, Grid (5 × 4 × 10)
 - Tiles are colored by Net Worth
 - Orbit, zoom and pan with the mouse
+- Reset view button that smoothly returns the camera to its initial position
 - Empty state with a Connect button until Sheets data is loaded
 - Sign-out confirmation dialog
 

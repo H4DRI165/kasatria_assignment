@@ -7,6 +7,8 @@ import { getSpherePositions } from "./layouts/sphere.js";
 import { getGridPositions } from "./layouts/grid.js";
 import { getHelixPositions } from "./layouts/helix.js";
 
+const RESET_DURATION_MS = 800;
+
 export function initializeVisualization(container, records) {
   if (!container) {
     throw new Error("Visualization container was not found.");
@@ -44,6 +46,11 @@ export function initializeVisualization(container, records) {
   controls.zoomSpeed = 1.5;
   controls.panSpeed = 1.5;
 
+  // Remember the initial camera state so Reset view can return to it.
+  const initialPosition = camera.position.clone();
+  const initialTarget = controls.target.clone();
+  const initialUp = camera.up.clone();
+
   // Configure mouse interactions
   controls.mouseButtons = {
     LEFT: THREE.MOUSE.ROTATE,
@@ -57,6 +64,7 @@ export function initializeVisualization(container, records) {
   let previousPointerY = 0;
 
   function handlePointerDown(event) {
+    if (resetAnimation) return;
     if (event.button !== 2) return;
 
     isRightDragging = true;
@@ -214,6 +222,74 @@ export function initializeVisualization(container, records) {
     renderer.setSize(width, height);
   }
 
+  // Smoothly move the camera back to its initial position and orientation.
+  let resetAnimation = null;
+  const currentQuaternion = new THREE.Quaternion();
+
+  function resetView() {
+    isRightDragging = false;
+
+    const endQuaternion = new THREE.Quaternion().setFromRotationMatrix(
+      new THREE.Matrix4().lookAt(initialPosition, initialTarget, initialUp),
+    );
+
+    resetAnimation = {
+      startTime: performance.now(),
+      startTarget: controls.target.clone(),
+      startDistance: camera.position.distanceTo(controls.target),
+      endDistance: initialPosition.distanceTo(initialTarget),
+      startQuaternion: camera.quaternion.clone(),
+      endQuaternion,
+    };
+
+    // Block user input while the camera is animating.
+    controls.enabled = false;
+  }
+
+  function updateResetAnimation(now) {
+    if (!resetAnimation) return;
+
+    const animation = resetAnimation;
+    const progress = Math.min(
+      (now - animation.startTime) / RESET_DURATION_MS,
+      1,
+    );
+
+    if (progress === 1) {
+      // Snap to the exact initial state and give control back to the user.
+      resetAnimation = null;
+
+      camera.position.copy(initialPosition);
+      camera.up.copy(initialUp);
+      controls.target.copy(initialTarget);
+      controls.enabled = true;
+      return;
+    }
+
+    // Ease-out: starts fast, slows down near the end.
+    const eased = 1 - Math.pow(1 - progress, 3);
+
+    controls.target.lerpVectors(animation.startTarget, initialTarget, eased);
+
+    const distance = THREE.MathUtils.lerp(
+      animation.startDistance,
+      animation.endDistance,
+      eased,
+    );
+
+    currentQuaternion
+      .copy(animation.startQuaternion)
+      .slerp(animation.endQuaternion, eased);
+
+    // The camera sits "behind" its target along its own +Z axis.
+    camera.position
+      .set(0, 0, distance)
+      .applyQuaternion(currentQuaternion)
+      .add(controls.target);
+
+    camera.up.set(0, 1, 0).applyQuaternion(currentQuaternion);
+  }
+
   // Animation loop
   let animationFrameId;
 
@@ -232,6 +308,8 @@ export function initializeVisualization(container, records) {
       }
     });
 
+    updateResetAnimation(performance.now());
+
     controls.update();
     renderer.render(scene, camera);
   }
@@ -246,6 +324,7 @@ export function initializeVisualization(container, records) {
   // Return methods needed by main.js
   return {
     setLayout,
+    resetView,
 
     resize: handleResize,
 
