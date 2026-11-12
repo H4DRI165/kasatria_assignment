@@ -5,6 +5,7 @@ import { createTile } from "./tile.js";
 import { getTablePositions } from "./layouts/table.js";
 import { getSpherePositions } from "./layouts/sphere.js";
 import { getGridPositions } from "./layouts/grid.js";
+import { getHelixPositions } from "./layouts/helix.js";
 
 export function initializeVisualization(container, records) {
   if (!container) {
@@ -169,6 +170,10 @@ export function initializeVisualization(container, records) {
 
       case "grid":
         positions = getGridPositions(tiles.length);
+        break;
+
+      case "helix":
+        positions = getHelixPositions(tiles.length);
         break;
 
       default:
