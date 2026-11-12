@@ -1,5 +1,8 @@
 import { CSS3DObject } from "three/addons/renderers/CSS3DRenderer.js";
 
+// Tiles are styled at 2x size in CSS, then scaled down for sharper zoom.
+const TILE_SCALE = 0.5;
+
 function getNetWorthClass(netWorth) {
   if (netWorth < 100_000) {
     return "net-worth-red";
@@ -76,5 +79,8 @@ export function createTile(record, index) {
     createTextElement("p", "tile-net-worth", formatNetWorth(record.netWorth)),
   );
 
-  return new CSS3DObject(element);
+  const object = new CSS3DObject(element);
+  object.scale.setScalar(TILE_SCALE);
+
+  return object;
 }
