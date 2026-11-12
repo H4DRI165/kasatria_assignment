@@ -1,11 +1,9 @@
 import * as THREE from "three";
-
 import { CSS3DRenderer } from "three/addons/renderers/CSS3DRenderer.js";
-
 import { TrackballControls } from "three/addons/controls/TrackballControls.js";
-
 import { createTile } from "./tile.js";
 import { getTablePositions } from "./layouts/table.js";
+import { getSpherePositions } from "./layouts/sphere.js";
 
 export function initializeVisualization(container, records) {
   if (!container) {
@@ -164,6 +162,10 @@ export function initializeVisualization(container, records) {
         positions = getTablePositions(tiles.length);
         break;
 
+      case "sphere":
+        positions = getSpherePositions(tiles.length);
+        break;
+
       default:
         console.warn(`Unknown layout: ${layoutName}`);
         return;
@@ -178,7 +180,13 @@ export function initializeVisualization(container, records) {
         position.z,
       );
 
-      tile.userData.targetRotation = new THREE.Euler(0, 0, 0);
+      const rotation = position.rotation ?? { x: 0, y: 0, z: 0 };
+
+      tile.userData.targetRotation = new THREE.Euler(
+        rotation.x,
+        rotation.y,
+        rotation.z,
+      );
     });
   }
 
