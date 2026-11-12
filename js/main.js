@@ -16,6 +16,7 @@ const emptyState = document.querySelector("#empty-state");
 const layoutControls = document.querySelector("#layout-controls");
 const signOutButton = document.querySelector("#sign-out-button");
 const signOutDialog = document.querySelector("#sign-out-dialog");
+const resetViewButton = document.querySelector("#reset-view-button");
 
 let visualizationInstance = null;
 
@@ -49,6 +50,10 @@ layoutButtons.forEach((button) => {
     visualizationInstance.setLayout(layoutName);
     setActiveLayoutButton(layoutName);
   });
+});
+
+resetViewButton.addEventListener("click", () => {
+  visualizationInstance?.resetView();
 });
 
 signOutButton.addEventListener("click", () => {
